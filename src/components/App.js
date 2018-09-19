@@ -1,45 +1,36 @@
 import React, { Component } from 'react';
 import CreationForm from './CreationForm/CreationForm';
+import TaskList from './TaskList/TaskList';
 
 class App extends Component {
   state = {
     taskName: '',
-    tasks: [ 'Learn React' ]
+    tasks: [
+      {
+        id: Date.now(),
+        name: 'Learn React'
+      }
+    ]
   };
 
   render() {
     return (
       <div className="App">
-        <CreationForm onSubmit={ this.createTask } />
-
-        <ul className="taskList">
-          {this.state.tasks.map((task, index) => (
-            <li key={ index }>
-              { task }
-              &nbsp;
-              <button>edit</button>
-              <button onClick={ this.deleteTask }>delete</button>
-            </li>
-          ))}
-        </ul>
+        <CreationForm onSubmit={ this.addTask } />
+        <TaskList tasks={ this.state.tasks } onTaskDelete={ this.deleteTask } />
       </div>
     );
   }
 
-  createTask = (task) => {
+  addTask = (task) => {
     this.setState({
       tasks: [ ...this.state.tasks, task ]
     });
   };
 
   deleteTask = (task) => {
-    const tasks = this.state.tasks;
-    const taskIndex = tasks.indexOf(task);
-
-    tasks.splice(taskIndex, 1);
-
     this.setState({
-      tasks: tasks
+      tasks: this.state.tasks.filter(item => item.id !== task.id)
     });
   };
 }

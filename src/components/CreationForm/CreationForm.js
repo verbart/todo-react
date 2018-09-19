@@ -8,7 +8,13 @@ class CreationForm extends Component {
   render() {
     return (
       <form onSubmit={ this.handleSubmit }>
-        <input autoFocus value={ this.state.taskName } onChange={ this.onChange }/>
+        <input
+          required
+          autoFocus
+          placeholder="Enter task name..."
+          value={ this.state.taskName }
+          onChange={ this.onChange }
+        />
         <button>Save</button>
       </form>
     );
@@ -21,11 +27,14 @@ class CreationForm extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
 
+    this.props.onSubmit({
+      id: Date.now(),
+      name: this.state.taskName
+    });
+
     this.setState({
       taskName: ''
     });
-
-    this.props.onSubmit(this.state.taskName);
   };
 }
 
