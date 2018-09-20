@@ -16,8 +16,15 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <CreationForm onSubmit={ this.addTask } />
-        <TaskList tasks={ this.state.tasks } onTaskDelete={ this.deleteTask } />
+        <CreationForm
+          onSubmit={ this.addTask }
+          tasksCount={ this.state.tasks.length }
+        />
+        <TaskList
+          tasks={ this.state.tasks }
+          onTaskDelete={ this.deleteTask }
+          onTaskUpdate={ this.updateTask }
+        />
       </div>
     );
   }
@@ -25,6 +32,18 @@ class App extends Component {
   addTask = (task) => {
     this.setState({
       tasks: [ ...this.state.tasks, task ]
+    });
+  };
+
+  updateTask = (task) => {
+    this.setState({
+      tasks: this.state.tasks.map(item => {
+        if (item.id === task.id) {
+          item = task;
+        }
+
+        return item
+      })
     });
   };
 

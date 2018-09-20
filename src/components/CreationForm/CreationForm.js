@@ -15,7 +15,7 @@ class CreationForm extends Component {
           value={ this.state.taskName }
           onChange={ this.onChange }
         />
-        <button>Save</button>
+        <button>Add #{ this.props.tasksCount + 1 }</button>
       </form>
     );
   }
