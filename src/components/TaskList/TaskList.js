@@ -9,8 +9,9 @@ class TaskList extends Component {
           <Task
             key={ task.id }
             task={ task }
-            onTaskDelete={ this.props.onTaskDelete }
             onTaskUpdate={ this.props.onTaskUpdate }
+            onTaskCompletionToggle={ this.props.onTaskCompletionToggle }
+            onTaskDelete={ this.props.onTaskDelete }
           />
         ))}
       </ul>

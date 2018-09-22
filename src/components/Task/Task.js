@@ -21,7 +21,13 @@ class TaskL extends Component {
             </span>
           ); else return (
             <span>
-              <span>{ task.name }</span>
+              <input
+                id={ task.id }
+                type="checkbox"
+                checked={ !!task.done }
+                onChange={ () => this.props.onTaskCompletionToggle(task) }
+              />
+              <label htmlFor={ task.id }>{ task.name }</label>
               &nbsp;
               <button onClick={ () => this.toggleEdit(task) }>edit</button>
               <button onClick={ () => this.props.onTaskDelete(task) }>delete</button>

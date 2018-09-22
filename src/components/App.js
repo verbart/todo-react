@@ -22,8 +22,9 @@ class App extends Component {
         />
         <TaskList
           tasks={ this.state.tasks }
-          onTaskDelete={ this.deleteTask }
           onTaskUpdate={ this.updateTask }
+          onTaskCompletionToggle={ this.toggleCompletion }
+          onTaskDelete={ this.deleteTask }
         />
       </div>
     );
@@ -46,6 +47,19 @@ class App extends Component {
       })
     });
   };
+
+  toggleCompletion = (task) => {
+    this.setState({
+      tasks: this.state.tasks.map(item => {
+        if (item.id === task.id) {
+          item.done = !item.done;
+        }
+
+        return item
+      })
+    });
+  };
+
 
   deleteTask = (task) => {
     this.setState({
