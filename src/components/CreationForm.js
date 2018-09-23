@@ -1,39 +1,42 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Form, Field, reduxForm } from 'redux-form';
+import { addTask } from '../actions/index';
+
+@connect(state => ({
+  tasksCounter: state.tasks.length + 1
+}), dispatch => ({
+  addTask: data => dispatch(addTask(data))
+}))
+
+@reduxForm({
+  form: 'addTask'
+})
 
 class CreationForm extends Component {
-  state = {
-    taskName: ''
-  };
-
   render() {
+    const { tasksCounter, handleSubmit } = this.props;
+
     return (
-      <form onSubmit={ this.handleSubmit }>
-        <input
+      <Form name="addTask" onSubmit={ handleSubmit(this.handleSubmit) }>
+        <Field
+          component="input"
+          name="name"
           required
           placeholder="Enter task name..."
-          value={ this.state.taskName }
-          onChange={ this.onChange }
         />
-        <button>Add #{ this.props.tasksCount + 1 }</button>
-      </form>
+        <button>Add #{ tasksCounter }</button>
+      </Form>
     );
   }
 
-  onChange = (event) => {
-    this.setState({ taskName: event.target.value });
-  };
-
-  handleSubmit = (e) => {
-    e.preventDefault();
-
-    this.props.onSubmit({
+  handleSubmit = (fields) => {
+    this.props.addTask({
       id: Date.now(),
-      name: this.state.taskName
+      name: fields.name
     });
 
-    this.setState({
-      taskName: ''
-    });
+    this.props.reset();
   };
 }
 

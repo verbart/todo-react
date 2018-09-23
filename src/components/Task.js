@@ -1,9 +1,24 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Form, Field, reduxForm } from 'redux-form';
+import { updateTask, removeTask } from "../actions";
 
-class TaskL extends Component {
+@connect(state => ({
+  initialValues: {
+    name: ''
+  }
+}), dispatch => ({
+  updateTask: payload => dispatch(updateTask(payload)),
+  removeTask: payload => dispatch(removeTask(payload))
+}))
+
+@reduxForm({
+  form: 'editTask'
+})
+
+class Task extends Component {
   state = {
-    isEdit: false,
-    tempTask: null
+    isEdit: false
   };
 
   render() {
@@ -11,27 +26,30 @@ class TaskL extends Component {
 
     return (
       <li key={ task.id }>
-        <input
-          id={ task.id }
-          type="checkbox"
-          checked={ !!task.done }
-          onChange={ () => this.props.onTaskCompletionToggle(task) }
-        />
-
         {(() => {
           if (this.state.isEdit) return (
             <span>
-              <input value={ this.state.tempTask.name } onChange={ this.handleChangeName }/>
-              &nbsp;
-              <button onClick={ () => this.toggleEdit(task) }>cancel</button>
-              <button onClick={ () => this.handleUpdate(task) }>save</button>
+              <Form name="editTask" onSubmit={ this.props.handleSubmit( this.handleUpdate ) }>
+                <Field name='name' component="input"/>
+                &nbsp;
+                <button type="button" onClick={ () => this.toggleEdit(task) }>cancel</button>
+                <button>save</button>
+              </Form>
             </span>
           ); else return (
             <span>
+              <Field
+                id={ task.id }
+                name="done"
+                component="input"
+                type="checkbox"
+                checked={ !!task.done }
+                onChange={ () => this.props.updateTask({ ...task, done: !task.done }) }
+              />
               <label htmlFor={ task.id }>{ task.name }</label>
               &nbsp;
               <button onClick={ () => this.toggleEdit(task) }>edit</button>
-              <button onClick={ () => this.props.onTaskDelete(task) }>delete</button>
+              <button onClick={ () => this.props.removeTask(task) }>delete</button>
             </span>
           );
         })()}
@@ -39,21 +57,17 @@ class TaskL extends Component {
     );
   }
 
-  toggleEdit = (task) => {
-    this.setState({ isEdit: !this.state.isEdit });
-    task && this.setState({ tempTask: task });
-  };
-
-  handleChangeName = (e) => {
+  toggleEdit = (task = {}) => {
+    this.props.change('name', task.name);
     this.setState({
-      tempTask: { ...this.state.tempTask, name: e.target.value }
+      isEdit: !this.state.isEdit
     });
   };
 
-  handleUpdate = () => {
-    this.props.onTaskUpdate(this.state.tempTask);
+  handleUpdate = (data) => {
+    this.props.updateTask({ ...this.props.task, ...data });
     this.toggleEdit();
   };
 }
 
-export default TaskL;
+export default Task;
