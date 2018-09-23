@@ -11,6 +11,13 @@ class TaskL extends Component {
 
     return (
       <li key={ task.id }>
+        <input
+          id={ task.id }
+          type="checkbox"
+          checked={ !!task.done }
+          onChange={ () => this.props.onTaskCompletionToggle(task) }
+        />
+
         {(() => {
           if (this.state.isEdit) return (
             <span>
@@ -21,12 +28,6 @@ class TaskL extends Component {
             </span>
           ); else return (
             <span>
-              <input
-                id={ task.id }
-                type="checkbox"
-                checked={ !!task.done }
-                onChange={ () => this.props.onTaskCompletionToggle(task) }
-              />
               <label htmlFor={ task.id }>{ task.name }</label>
               &nbsp;
               <button onClick={ () => this.toggleEdit(task) }>edit</button>
@@ -39,20 +40,13 @@ class TaskL extends Component {
   }
 
   toggleEdit = (task) => {
-    const taskCopy = task && JSON.parse(JSON.stringify(task));
-
-    this.setState({
-      isEdit: !this.state.isEdit,
-      tempTask: this.state.tempTask ? null : taskCopy
-    });
+    this.setState({ isEdit: !this.state.isEdit });
+    task && this.setState({ tempTask: task });
   };
 
   handleChangeName = (e) => {
-    const temp = this.state.tempTask;
-    temp.name = e.target.value;
-
     this.setState({
-      tempTask: temp
+      tempTask: { ...this.state.tempTask, name: e.target.value }
     });
   };
 

@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
-import CreationForm from './CreationForm/CreationForm';
-import TaskList from './TaskList/TaskList';
+import CreationForm from './CreationForm';
+import TaskList from './TaskList';
 
 class App extends Component {
   state = {
     taskName: '',
     tasks: [
       {
-        id: Date.now(),
+        id: 1,
+        name: 'Learn JavaScript',
+        done: true
+      },
+      {
+        id: 2,
         name: 'Learn React'
       }
     ]
@@ -38,13 +43,7 @@ class App extends Component {
 
   updateTask = (task) => {
     this.setState({
-      tasks: this.state.tasks.map(item => {
-        if (item.id === task.id) {
-          item = task;
-        }
-
-        return item
-      })
+      tasks: this.state.tasks.map(item => item.id === task.id ? task : item)
     });
   };
 
@@ -59,7 +58,6 @@ class App extends Component {
       })
     });
   };
-
 
   deleteTask = (task) => {
     this.setState({

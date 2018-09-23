@@ -10,7 +10,6 @@ class CreationForm extends Component {
       <form onSubmit={ this.handleSubmit }>
         <input
           required
-          autoFocus
           placeholder="Enter task name..."
           value={ this.state.taskName }
           onChange={ this.onChange }
