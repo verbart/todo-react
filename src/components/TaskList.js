@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
-import Task from '../Task/Task';
+import { connect } from 'react-redux';
+import Task from './Task';
+
+@connect((state) => ({
+  tasks: state.tasks
+}))
 
 class TaskList extends Component {
   render() {
@@ -9,9 +14,6 @@ class TaskList extends Component {
           <Task
             key={ task.id }
             task={ task }
-            onTaskUpdate={ this.props.onTaskUpdate }
-            onTaskCompletionToggle={ this.props.onTaskCompletionToggle }
-            onTaskDelete={ this.props.onTaskDelete }
           />
         ))}
       </ul>
