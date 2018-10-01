@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Form, Field, reduxForm } from 'redux-form';
 import { addTask } from '../actions/index';
 
-@connect(state => ({
-  tasksCounter: state.tasks.length + 1
-}), dispatch => ({
-  addTask: data => dispatch(addTask(data))
-}))
+@connect(
+  state => ({ tasksCounter: state.tasks.length + 1 }),
+  dispatch => bindActionCreators({ addTask }, dispatch)
+)
 
 @reduxForm({
   form: 'addTask'

@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Form, Field, reduxForm } from 'redux-form';
-import { updateTask, removeTask } from "../actions";
+import { updateTask, removeTask } from '../actions';
 
-@connect(state => ({
-  initialValues: {
-    name: ''
-  }
-}), dispatch => ({
-  updateTask: payload => dispatch(updateTask(payload)),
-  removeTask: payload => dispatch(removeTask(payload))
-}))
+@connect(
+  state => ({
+    initialValues: {
+      name: ''
+    }
+  }),
+  dispatch => bindActionCreators({ updateTask, removeTask }, dispatch)
+)
 
 @reduxForm({
   form: 'editTask'
