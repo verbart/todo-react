@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Form, Field, reduxForm } from 'redux-form';
+import Button from '@material-ui/core/Button';
+import { TextField } from 'redux-form-material-ui'
 import { addTask } from '../actions/index';
 
 @connect(state => ({
@@ -20,12 +22,12 @@ class CreationForm extends Component {
     return (
       <Form name="addTask" onSubmit={ handleSubmit(this.handleSubmit) }>
         <Field
-          component="input"
+          component={ TextField }
           name="name"
           required
           placeholder="Enter task name..."
         />
-        <button>Add #{ tasksCounter }</button>
+        <Button variant="contained" color="primary">Add #{ tasksCounter }</Button>
       </Form>
     );
   }
