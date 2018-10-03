@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import List from '@material-ui/core/List';
+import Divider from '@material-ui/core/Divider';
 import Task from './Task';
 
 @connect((state) => ({
@@ -9,32 +10,19 @@ import Task from './Task';
 
 class TaskList extends Component {
   render() {
+    const { tasks } = this.props;
+
     return (
-      <div>
         <List>
-          {this.props.tasks.map(task => (
-            <Task key={ task.id } task={ task } />
+          {tasks.map((task, index)=> (
+            <div key={ task.id }>
+              <Task task={ task } />
+              { ++index < tasks.length && <Divider /> }
+            </div>
           ))}
         </List>
-      </div>
     );
   }
 }
-
-
-// class TaskList extends Component {
-//   render() {
-//     return (
-//       <ul className="taskList">
-//         {this.props.tasks.map((task, index) => (
-//           <Task
-//             key={ task.id }
-//             task={ task }
-//           />
-//         ))}
-//       </ul>
-//     );
-//   }
-// }
 
 export default TaskList;

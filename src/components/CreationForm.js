@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Form, Field, reduxForm } from 'redux-form';
-import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
 import { TextField } from 'redux-form-material-ui'
 import { addTask } from '../actions/index';
 
-@connect(state => ({
-  tasksCounter: state.tasks.length + 1
-}), dispatch => ({
+@connect(null, dispatch => ({
   addTask: data => dispatch(addTask(data))
 }))
 
@@ -17,18 +15,23 @@ import { addTask } from '../actions/index';
 
 class CreationForm extends Component {
   render() {
-    const { tasksCounter, handleSubmit } = this.props;
+    const { handleSubmit } = this.props;
 
     return (
-      <Form name="addTask" onSubmit={ handleSubmit(this.handleSubmit) }>
-        <Field
-          component={ TextField }
-          name="name"
-          required
-          placeholder="Enter task name..."
-        />
-        <Button variant="contained" color="primary">Add #{ tasksCounter }</Button>
-      </Form>
+        <Form name="addTask" onSubmit={ handleSubmit(this.handleSubmit) }>
+          <Grid container justify="center">
+            <Field
+              name="name"
+              required
+              placeholder="Enter task name..."
+              component={ TextField }
+              fullWidth
+              size="lg"
+              margin="dense"
+              variant="outlined"
+            />
+          </Grid>
+        </Form>
     );
   }
 
