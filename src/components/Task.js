@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Form, Field, reduxForm } from 'redux-form';
-import { TextField, Checkbox } from 'redux-form-material-ui'
+import { TextField } from 'redux-form-material-ui'
+import Checkbox from '@material-ui/core/Checkbox';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -39,10 +40,7 @@ class Task extends Component {
         button
         onClick={ () => this.props.updateTask({ ...task, done: !task.done }) }
       >
-        <Field
-           name="done"
-           component={ Checkbox }
-           type="checkbox"
+        <Checkbox
            checked={ !!task.done }
            onChange={ () => this.props.updateTask({ ...task, done: !task.done }) }
         />
