@@ -11,7 +11,7 @@ import RestoreIcon from '@material-ui/icons/SettingsBackupRestore';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import SaveIcon from '@material-ui/icons/Save';
-import { updateTask, removeTask } from "../actions";
+import { updateTask, removeTask } from "../../actions/index";
 
 @connect(state => ({
   initialValues: {

@@ -1,9 +1,11 @@
+import './index.scss';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import reducer from './reducers'
-import App from './components/App';
+import App from './containers/App';
 
 const store = createStore(
   reducer,
@@ -12,7 +14,9 @@ const store = createStore(
 
 ReactDOM.render(
   <Provider store={ store }>
-    <App />
+    <BrowserRouter>
+      <Route path="/" component={ App } />
+    </BrowserRouter>
   </Provider>,
 
   document.getElementById('root')

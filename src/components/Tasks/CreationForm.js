@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Form, Field, reduxForm } from 'redux-form';
 import Grid from '@material-ui/core/Grid';
 import { TextField } from 'redux-form-material-ui'
-import { addTask } from '../actions/index';
+import { addTask } from '../../actions/index';
 
 @connect(null, dispatch => ({
   addTask: data => dispatch(addTask(data))
