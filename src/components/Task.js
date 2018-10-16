@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Grid, List, Button, Checkbox } from 'semantic-ui-react'
 import { Form, Field, reduxForm } from 'redux-form';
 import { updateTask, removeTask } from "../actions";
 
@@ -25,36 +26,63 @@ class Task extends Component {
     const { task } = this.props;
 
     return (
-      <li key={ task.id }>
-        {(() => {
-          if (this.state.isEdit) return (
-            <span>
-              <Form name="editTask" onSubmit={ this.props.handleSubmit( this.handleUpdate ) }>
-                <Field name='name' component="input"/>
-                &nbsp;
-                <button type="button" onClick={ () => this.toggleEdit(task) }>cancel</button>
-                <button>save</button>
-              </Form>
-            </span>
-          ); else return (
-            <span>
-              <Field
-                id={ task.id }
-                name="done"
-                component="input"
-                type="checkbox"
-                checked={ !!task.done }
-                onChange={ () => this.props.updateTask({ ...task, done: !task.done }) }
-              />
-              <label htmlFor={ task.id }>{ task.name }</label>
-              &nbsp;
-              <button onClick={ () => this.toggleEdit(task) }>edit</button>
-              <button onClick={ () => this.props.removeTask(task) }>delete</button>
-            </span>
-          );
-        })()}
-      </li>
+      <List.Item onClick={() => this.props.updateTask({ ...task, done: !task.done })}>
+        <Grid>
+          <Grid.Row className="equal width" verticalAlign="middle">
+            <Grid.Column>
+              <List.Content>
+                <Checkbox
+                  label={task.name}
+                  checked={task.done}
+                  onChange={() => this.props.updateTask({ ...task, done: !task.done })}
+                />
+              </List.Content>
+            </Grid.Column>
+
+            <Grid.Column className="right aligned">
+              <List.Content>
+                <Button.Group basic size='small' onClick={(e) => e.stopPropagation()}>
+                  <Button icon="edit" />
+                  <Button icon="trash" onClick={() => this.props.removeTask(task)} />
+                </Button.Group>
+              </List.Content>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </List.Item>
     );
+
+    // return (
+    //   <li key={ task.id }>
+    //     {(() => {
+    //       if (this.state.isEdit) return (
+    //         <span>
+    //           <Form name="editTask" onSubmit={ this.props.handleSubmit( this.handleUpdate ) }>
+    //             <Field name='name' component="input"/>
+    //             &nbsp;
+    //             <button type="button" onClick={ () => this.toggleEdit(task) }>cancel</button>
+    //             <button>save</button>
+    //           </Form>
+    //         </span>
+    //       ); else return (
+    //         <span>
+    //           <Field
+    //             id={ task.id }
+    //             name="done"
+    //             component="input"
+    //             type="checkbox"
+    //             checked={ !!task.done }
+    //             onChange={ () => this.props.updateTask({ ...task, done: !task.done }) }
+    //           />
+    //           <label htmlFor={ task.id }>{ task.name }</label>
+    //           &nbsp;
+    //           <button onClick={ () => this.toggleEdit(task) }>edit</button>
+    //           <button onClick={ () => this.props.removeTask(task) }>delete</button>
+    //         </span>
+    //       );
+    //     })()}
+    //   </li>
+    // );
   }
 
   toggleEdit = (task = {}) => {
