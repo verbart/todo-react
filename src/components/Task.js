@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Grid, List, Button, Checkbox } from 'semantic-ui-react'
+import { Grid, List, Button, Icon } from 'semantic-ui-react'
 import { Form, Field, reduxForm } from 'redux-form';
 import { updateTask, removeTask } from "../actions";
 
@@ -24,6 +24,9 @@ class Task extends Component {
 
   render() {
     const { task } = this.props;
+    const Checkbox = () => task.done ?
+      <Icon name="circle outline check" color="teal" /> :
+      <Icon name="circle outline" />;
 
     return (
       <List.Item onClick={() => this.props.updateTask({ ...task, done: !task.done })}>
@@ -31,11 +34,8 @@ class Task extends Component {
           <Grid.Row className="equal width" verticalAlign="middle">
             <Grid.Column>
               <List.Content>
-                <Checkbox
-                  label={task.name}
-                  checked={task.done}
-                  onChange={() => this.props.updateTask({ ...task, done: !task.done })}
-                />
+                <Checkbox/>
+                {task.name}
               </List.Content>
             </Grid.Column>
 
