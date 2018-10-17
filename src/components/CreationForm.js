@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Input } from 'semantic-ui-react'
+import { InputField } from 'react-semantic-redux-form';
 import { Form, Field, reduxForm } from 'redux-form';
 import { addTask } from '../actions/index';
 
@@ -20,19 +20,13 @@ class CreationForm extends Component {
 
     return (
       <Form name="addTask" onSubmit={ handleSubmit(this.handleSubmit) }>
-        <Input
+        <Field
+          component={InputField}
+          name="name"
           fluid
-          action={{ color: 'teal',content: 'Add task' }}
+          action={{ color: 'teal', content: `Add #${tasksCounter}` }}
           placeholder='Enter task name...'
         />
-
-        {/*<Field*/}
-          {/*component="input"*/}
-          {/*name="name"*/}
-          {/*required*/}
-          {/*placeholder="Enter task name..."*/}
-        {/*/>*/}
-        {/*<button>Add #{ tasksCounter }</button>*/}
       </Form>
     );
   }
