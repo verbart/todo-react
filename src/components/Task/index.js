@@ -4,15 +4,18 @@ import { TextArea } from 'react-semantic-redux-form';
 import { Grid, List, Button } from 'semantic-ui-react'
 import { Form, Field, reduxForm } from 'redux-form';
 import injectSheet from 'react-jss'
-import { updateTask, removeTask } from '../../actions/index';
+import { setEditedTask, updateTask, removeTask } from '../../actions/index';
 import Checkbox from './Checkbox';
+import Actions from './Actions';
 import styles from './styles';
 
 @connect(state => ({
+  editedTask: state.tasks.editedTask,
   initialValues: {
     name: ''
   }
 }), dispatch => ({
+  setEditedTask: payload => dispatch(setEditedTask(payload)),
   updateTask: payload => dispatch(updateTask(payload)),
   removeTask: payload => dispatch(removeTask(payload))
 }))
@@ -24,12 +27,26 @@ import styles from './styles';
 @injectSheet(styles)
 
 export default class Task extends Component {
-  state = {
-    isEdit: false
+  isEdit() {
+    return this.props.editedTask && this.props.editedTask.id === this.props.task.id;
+  }
+  startEdit = (task) => {
+    this.props.setEditedTask(task);
+    this.props.change('name', task.name);
+  };
+  cancelEdit = () => {
+    this.props.setEditedTask();
+  };
+  handleUpdate = (task) => {
+    this.props.updateTask({ ...this.props.task, ...task });
+    this.cancelEdit();
+  };
+  removeTask = (task) => {
+    this.props.removeTask(task);
   };
 
   render() {
-    const { isEdit } = this.state;
+    const isEdit = this.isEdit();
     const { classes, task } = this.props;
 
     return (
@@ -41,6 +58,7 @@ export default class Task extends Component {
                 <Checkbox done={task.done ? 1 : 0} />
 
                 <Form
+                  id={task.id}
                   name="editTask"
                   className={classes.form}
                   onSubmit={this.props.handleSubmit( this.handleUpdate )}
@@ -64,8 +82,13 @@ export default class Task extends Component {
             <Grid.Column className="right aligned" style={{ flexGrow: 0, width: 'auto' }}>
               <List.Content>
                 <Button.Group basic size='small' onClick={(e) => e.stopPropagation()}>
-                  <Button icon="edit" onClick={() => this.toggleEdit(task)} />
-                  <Button icon="trash" onClick={() => this.props.removeTask(task)} />
+                  <Actions
+                    isEdit={isEdit}
+                    task={task}
+                    cancelEdit={this.cancelEdit}
+                    startEdit={this.startEdit}
+                    removeTask={this.removeTask}
+                  />
                 </Button.Group>
               </List.Content>
             </Grid.Column>
@@ -73,49 +96,5 @@ export default class Task extends Component {
         </Grid>
       </List.Item>
     );
-
-    // return (
-    //   <li key={ task.id }>
-    //     {(() => {
-    //       if (this.state.isEdit) return (
-    //         <span>
-    //           <Form name="editTask" onSubmit={ this.props.handleSubmit( this.handleUpdate ) }>
-    //             <Field name='name' component="input"/>
-    //             &nbsp;
-    //             <button type="button" onClick={ () => this.toggleEdit(task) }>cancel</button>
-    //             <button>save</button>
-    //           </Form>
-    //         </span>
-    //       ); else return (
-    //         <span>
-    //           <Field
-    //             id={ task.id }
-    //             name="done"
-    //             component="input"
-    //             type="checkbox"
-    //             checked={ !!task.done }
-    //             onChange={ () => this.props.updateTask({ ...task, done: !task.done }) }
-    //           />
-    //           <label htmlFor={ task.id }>{ task.name }</label>
-    //           &nbsp;
-    //           <button onClick={ () => this.toggleEdit(task) }>edit</button>
-    //           <button onClick={ () => this.props.removeTask(task) }>delete</button>
-    //         </span>
-    //       );
-    //     })()}
-    //   </li>
-    // );
   }
-
-  toggleEdit = (task = {}) => {
-    this.props.change('name', task.name);
-    this.setState({
-      isEdit: !this.state.isEdit
-    });
-  };
-
-  handleUpdate = (task) => {
-    this.props.updateTask({ ...this.props.task, ...task });
-    this.toggleEdit();
-  };
 }

@@ -4,7 +4,7 @@ import { List } from 'semantic-ui-react'
 import Task from './Task';
 
 @connect((state) => ({
-  tasks: state.tasks
+  tasks: state.tasks.taskList
 }))
 
 class TaskList extends Component {

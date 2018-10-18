@@ -9,7 +9,8 @@ export default {
     '& textarea': {
       width: '100%',
       padding: 0,
-      font: 'inherit'
+      font: 'inherit',
+      lineHeight: 1
     }
   }
 };
