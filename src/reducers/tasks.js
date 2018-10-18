@@ -8,7 +8,7 @@ const initialState = [
   },
   {
     id: 2,
-    name: 'Learn React'
+    name: 'Learn React and Redux'
   }
 ];
 

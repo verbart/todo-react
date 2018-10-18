@@ -24,6 +24,7 @@ class CreationForm extends Component {
           component={InputField}
           name="name"
           fluid
+          focus
           action={{ color: 'teal', content: `Add #${tasksCounter}` }}
           placeholder='Enter task name...'
         />

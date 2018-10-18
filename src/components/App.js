@@ -6,15 +6,11 @@ import TaskList from './TaskList';
 class App extends Component {
   render() {
     return (
-      <Container text>
-        <Segment.Group>
-          <Segment.Group>
-            <CreationForm/>
-          </Segment.Group>
+      <Container text style={{ marginTop: '2em' }}>
+        <CreationForm/>
 
-          <Segment.Group stacked>
-            <TaskList/>
-          </Segment.Group>
+        <Segment.Group stacked>
+          <TaskList/>
         </Segment.Group>
       </Container>
     );

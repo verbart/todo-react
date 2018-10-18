@@ -9,6 +9,7 @@
     "react-app-rewire-decorators-legacy": "^0.1.0",
     "react-app-rewired": "^1.6.2",
     "react-dom": "^16.5.2",
+    "react-jss": "^8.6.1",
     "react-redux": "^5.0.7",
     "react-scripts": "1.1.5",
     "react-semantic-redux-form": "^1.2.6",
