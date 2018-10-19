@@ -5,7 +5,7 @@ export default ({ isEdit, task, cancelEdit, startEdit, removeTask }) => (
   <Fragment>
     {isEdit ?
       <Fragment>
-        <Button onClick={console.log('wtf?')} icon="save" form={task.id} />
+        <Button icon="save" form={task.id} />
         <Button icon="undo" onClick={() => cancelEdit()} />
       </Fragment>
       :
