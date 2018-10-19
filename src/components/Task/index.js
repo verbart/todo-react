@@ -14,11 +14,11 @@ import styles from './styles';
   initialValues: {
     name: ''
   }
-}), dispatch => ({
-  setEditedTask: payload => dispatch(setEditedTask(payload)),
-  updateTask: payload => dispatch(updateTask(payload)),
-  removeTask: payload => dispatch(removeTask(payload))
-}))
+}), {
+  setEditedTask,
+  updateTask,
+  removeTask
+})
 
 @reduxForm({
   form: 'editTask'

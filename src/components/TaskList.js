@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { List } from 'semantic-ui-react'
 import Task from './Task';
 
-@connect((state) => ({
+@connect(state => ({
   tasks: state.tasks.taskList
 }))
 

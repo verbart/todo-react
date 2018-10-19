@@ -6,9 +6,9 @@ import { addTask } from '../actions/index';
 
 @connect(state => ({
   tasksCounter: state.tasks.taskList.length + 1
-}), dispatch => ({
-  addTask: data => dispatch(addTask(data))
-}))
+}), {
+  addTask
+})
 
 @reduxForm({
   form: 'addTask'
