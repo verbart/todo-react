@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { TextArea } from 'react-semantic-redux-form';
-import { Grid, List, Button } from 'semantic-ui-react'
-import { Form, Field, reduxForm } from 'redux-form';
+import { Grid, List } from 'semantic-ui-react'
+import { Form, Field, reduxForm, getFormValues } from 'redux-form';
 import injectSheet from 'react-jss'
 import { setEditedTask, updateTask, removeTask } from '../../actions/index';
 import Checkbox from './Checkbox';
@@ -10,10 +10,8 @@ import Actions from './Actions';
 import styles from './styles';
 
 @connect(state => ({
-  editedTask: state.tasks.editedTask,
-  initialValues: {
-    name: ''
-  }
+  initialValues: state.tasks.editedTask,
+  editedTask: getFormValues('editTask')(state)
 }), {
   setEditedTask,
   updateTask,
@@ -21,7 +19,8 @@ import styles from './styles';
 })
 
 @reduxForm({
-  form: 'editTask'
+  form: 'editTask',
+  enableReinitialize: true
 })
 
 @injectSheet(styles)
@@ -32,12 +31,11 @@ export default class Task extends Component {
   }
   startEdit = (task) => {
     this.props.setEditedTask(task);
-    this.props.change('name', task.name);
   };
   cancelEdit = () => {
     this.props.setEditedTask();
   };
-  handleUpdate = (task) => {
+  handleUpdate = (task = this.props.editedTask) => {
     this.props.updateTask({ ...this.props.task, ...task });
     this.cancelEdit();
   };
@@ -58,10 +56,10 @@ export default class Task extends Component {
                 <Checkbox done={task.done ? 1 : 0} />
 
                 <Form
-                  id={task.id}
+                  id={'editTask_' + task.id}
                   name="editTask"
                   className={classes.form}
-                  onSubmit={this.props.handleSubmit( this.handleUpdate )}
+                  onSubmit={this.props.handleSubmit(this.handleUpdate)}
                 >
                   {isEdit ?
                     <Field
@@ -80,17 +78,14 @@ export default class Task extends Component {
             </Grid.Column>
 
             <Grid.Column className="right aligned" style={{ flexGrow: 0, width: 'auto' }}>
-              <List.Content>
-                <Button.Group basic size='small' onClick={(e) => e.stopPropagation()}>
-                  <Actions
-                    isEdit={isEdit}
-                    task={task}
-                    cancelEdit={this.cancelEdit}
-                    startEdit={this.startEdit}
-                    removeTask={this.removeTask}
-                  />
-                </Button.Group>
-              </List.Content>
+              <Actions
+                isEdit={isEdit}
+                task={task}
+                startEdit={this.startEdit}
+                cancelEdit={this.cancelEdit}
+                updateTask={this.handleUpdate}
+                removeTask={this.removeTask}
+              />
             </Grid.Column>
           </Grid.Row>
         </Grid>

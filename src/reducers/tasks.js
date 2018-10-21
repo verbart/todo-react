@@ -11,6 +11,10 @@ const initialState = {
     {
       id: 2,
       name: 'Learn React and Redux'
+    },
+    {
+      id: 3,
+      name: 'Learn NodeJS'
     }
   ]
 };
