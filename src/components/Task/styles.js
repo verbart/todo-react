@@ -10,7 +10,9 @@ export default {
       width: '100%',
       padding: 0,
       font: 'inherit',
-      lineHeight: 1
+      border: 0,
+      resize: 'none',
+      background: 'none'
     }
   }
 };

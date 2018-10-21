@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { TextArea } from 'react-semantic-redux-form';
 import { Grid, List } from 'semantic-ui-react'
 import { Form, Field, reduxForm, getFormValues } from 'redux-form';
 import injectSheet from 'react-jss'
 import { setEditedTask, updateTask, removeTask } from '../../actions/index';
 import Checkbox from './Checkbox';
 import Actions from './Actions';
+import TextArea from './Textarea';
 import styles from './styles';
 
 @connect(state => ({
@@ -20,7 +20,8 @@ import styles from './styles';
 
 @reduxForm({
   form: 'editTask',
-  enableReinitialize: true
+  enableReinitialize: true,
+  keepDirtyOnReinitialize: false
 })
 
 @injectSheet(styles)
@@ -45,7 +46,8 @@ export default class Task extends Component {
 
   render() {
     const isEdit = this.isEdit();
-    const { classes, task } = this.props;
+    const { classes, task, change, editedTask } = this.props;
+    const name = editedTask ? editedTask.name : 'wtf';
 
     return (
       <List.Item onClick={() => this.props.updateTask({ ...task, done: !task.done })}>
@@ -63,15 +65,16 @@ export default class Task extends Component {
                 >
                   {isEdit ?
                     <Field
+                      defaultValue="Just a single line..."
                       component={TextArea}
                       name="name"
-                      autoHeight
-                      rows={1}
                       placeholder='Enter task name...'
                       onClick={(e) => e.stopPropagation()}
+                      autoFocus
+                      onFocus={() => change('name', name + ' ')}
                     />
                     :
-                    task.name
+                    task.name.split('\n').join('<br>')
                   }
                 </Form>
               </List.Content>
