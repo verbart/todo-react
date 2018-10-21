@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { InputField } from 'react-semantic-redux-form';
 import { Form, Field, reduxForm } from 'redux-form';
 import { addTask } from '../actions/index';
 
-@connect(
-  state => ({ tasksCounter: state.tasks.length + 1 }),
-  dispatch => bindActionCreators({ addTask }, dispatch)
-)
+@connect(state => ({
+  tasksCounter: state.tasks.taskList.length + 1
+}), {
+  addTask
+})
 
 @reduxForm({
   form: 'addTask'
@@ -20,12 +21,13 @@ class CreationForm extends Component {
     return (
       <Form name="addTask" onSubmit={ handleSubmit(this.handleSubmit) }>
         <Field
-          component="input"
+          component={InputField}
           name="name"
-          required
-          placeholder="Enter task name..."
+          fluid
+          focus
+          action={{ color: 'teal', content: `Add #${tasksCounter}` }}
+          placeholder='Enter task name...'
         />
-        <button>Add #{ tasksCounter }</button>
       </Form>
     );
   }
