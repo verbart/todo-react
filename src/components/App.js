@@ -1,20 +1,19 @@
-import React, { Component } from 'react';
+import React, { Fragment } from 'react';
 import { Container, Segment } from 'semantic-ui-react'
+import MainHeader from './MainHeader';
 import CreationForm from './CreationForm';
 import TaskList from './TaskList';
 
-class App extends Component {
-  render() {
-    return (
-      <Container text style={{ marginTop: '2em' }}>
-        <CreationForm/>
+export default () => (
+  <Fragment>
+    <MainHeader/>
 
-        <Segment.Group stacked>
-          <TaskList/>
-        </Segment.Group>
-      </Container>
-    );
-  }
-}
+    <Container text style={{ paddingTop: '7em' }}>
+      <CreationForm/>
 
-export default App;
+      <Segment.Group stacked>
+        <TaskList/>
+      </Segment.Group>
+    </Container>
+  </Fragment>
+);
