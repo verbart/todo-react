@@ -1,7 +1,8 @@
 import React, { Fragment } from 'react';
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Route } from 'react-router-dom';
 import MainHeader from './MainHeader';
-import TasksPage from '../pages/Tasks';
+import Tasks from '../pages/Tasks';
+import Login from '../pages/Login';
 
 export default () => (
   <BrowserRouter>
@@ -9,7 +10,8 @@ export default () => (
       <MainHeader/>
 
       <div style={{ paddingTop: '7em' }}>
-        <Route exact path="/" component={ TasksPage } />
+        <Route exact path="/" component={ Tasks } />
+        <Route path="/login" component={ Login } />
       </div>
     </Fragment>
   </BrowserRouter>
