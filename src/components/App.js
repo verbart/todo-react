@@ -1,19 +1,16 @@
 import React, { Fragment } from 'react';
-import { Container, Segment } from 'semantic-ui-react'
+import { BrowserRouter, Route } from "react-router-dom";
 import MainHeader from './MainHeader';
-import CreationForm from './CreationForm';
-import TaskList from './TaskList';
+import TasksPage from '../pages/Tasks';
 
 export default () => (
-  <Fragment>
-    <MainHeader/>
+  <BrowserRouter>
+    <Fragment>
+      <MainHeader/>
 
-    <Container text style={{ paddingTop: '7em' }}>
-      <CreationForm/>
-
-      <Segment.Group stacked>
-        <TaskList/>
-      </Segment.Group>
-    </Container>
-  </Fragment>
+      <div style={{ paddingTop: '7em' }}>
+        <Route exact path="/" component={ TasksPage } />
+      </div>
+    </Fragment>
+  </BrowserRouter>
 );
