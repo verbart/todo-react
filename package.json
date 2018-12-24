@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "https://verbart.github.io/todo-react",
   "dependencies": {
+    "formik": "^1.4.1",
     "gh-pages": "^2.0.0",
     "react": "^16.5.2",
     "react-app-rewire-decorators-legacy": "^0.1.0",
@@ -18,7 +19,8 @@
     "redux": "^4.0.0",
     "redux-form": "^7.4.2",
     "semantic-ui-css": "^2.4.1",
-    "semantic-ui-react": "^0.82.5"
+    "semantic-ui-react": "^0.82.5",
+    "yup": "^0.26.6"
   },
   "scripts": {
     "start": "react-app-rewired start",

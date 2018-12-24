@@ -1,50 +1,87 @@
 import React, { Component } from 'react';
-import { Field, reduxForm } from 'redux-form';
-import { Button, Form, Segment } from 'semantic-ui-react'
-import { InputField } from 'react-semantic-redux-form';
+import { Form, Input, Button, Segment, Label } from 'semantic-ui-react';
+import { withFormik } from 'formik';
+import * as yup from 'yup';
 
-@reduxForm({
-  form: 'loginForm'
+@withFormik({
+  mapPropsToValues: () => ({
+    email: '',
+    password: ''
+  }),
+
+  validationSchema: yup.object().shape({
+    email: yup.string()
+      .email('Invalid email address')
+      .required('Required'),
+
+    password: yup.string()
+      .min(8, 'Must be longer than ${min} characters')
+      .required('Required')
+  }),
+
+  handleSubmit: (values, { setSubmitting }) => {
+    setTimeout(() => {
+      console.log(values);
+      setSubmitting(false);
+    }, 1000);
+  },
+
+  displayName: 'BasicForm',
 })
 
 export default class extends Component {
-  login(user) {
-    console.log(user);
-  }
-
   render() {
-    const { handleSubmit } = this.props;
+    const {
+      values,
+      errors,
+      handleChange,
+      handleBlur,
+      handleSubmit,
+    } = this.props;
 
     return (
       <Form
         size='large'
         style={{ maxWidth: 400, margin: '0 auto' }}
-        onSubmit={handleSubmit(this.login)}
+        onSubmit={handleSubmit}
+        noValidate
       >
         <Segment stacked>
-          <Field
-            component={InputField}
-            name="email"
-            type="email"
-            placeholder="E-mail address"
-            required
-            fluid
-            icon="user"
-            iconPosition="left"
-          />
+          <Form.Field>
+            <Input
+              name='email'
+              value={values.email}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              type='email'
+              placeholder='E-mail address'
+              required
+              fluid
+              icon='user'
+              iconPosition='left'
+            />
 
-          <Field
-            component={InputField}
-            name="password"
-            type="password"
-            placeholder="Password"
-            required
-            fluid
-            icon="lock"
-            iconPosition="left"
-          />
+            {errors.email && <Label basic color='red' pointing>{errors.email}</Label>}
+          </Form.Field>
 
-          <Button color="teal" fluid size="large">
+          <Form.Field>
+            <Input
+              name='password'
+              value={values.password}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              type='password'
+              placeholder='Password'
+              required
+              fluid
+              icon='lock'
+              iconPosition='left'
+            />
+
+            {errors.password && <Label basic color='red' pointing>{errors.password}</Label>}
+          </Form.Field>
+
+          <Button color='teal' fluid size='large' type='submit'>
             Login
           </Button>
         </Segment>
