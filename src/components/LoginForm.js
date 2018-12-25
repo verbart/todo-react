@@ -15,6 +15,7 @@ import * as yup from 'yup';
       .required('Required'),
 
     password: yup.string()
+      // eslint-disable-next-line
       .min(8, 'Must be longer than ${min} characters')
       .required('Required')
   }),
@@ -24,9 +25,7 @@ import * as yup from 'yup';
       console.log(values);
       setSubmitting(false);
     }, 1000);
-  },
-
-  displayName: 'BasicForm',
+  }
 })
 
 export default class extends Component {
