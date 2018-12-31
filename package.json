@@ -17,7 +17,7 @@
     "react-semantic-redux-form": "^1.2.6",
     "react-textarea-autosize": "^7.0.4",
     "redux": "^4.0.0",
-    "redux-form": "^7.4.2",
+    "redux-thunk": "^2.3.0",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.82.5",
     "yup": "^0.26.6"
@@ -28,5 +28,8 @@
     "test": "react-app-rewired test --env=jsdom",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
+  },
+  "devDependencies": {
+    "redux-devtools-extension": "^2.13.7"
   }
 }

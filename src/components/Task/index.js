@@ -1,88 +1,80 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Grid, List } from 'semantic-ui-react'
-import { Form, Field, reduxForm, getFormValues } from 'redux-form';
+import { Grid, List, Dimmer, Loader } from 'semantic-ui-react'
 import injectSheet from 'react-jss'
-import { setEditedTask, updateTask, removeTask } from '../../actions/index';
+import { updateTask, updateLocalTask, removeTask } from '../../actions/index';
 import Checkbox from './Checkbox';
 import Actions from './Actions';
-import TextArea from './Textarea';
+import EditTaskForm from './EditTaskForm';
 import styles from './styles';
 
-@connect(state => ({
-  initialValues: state.tasks.editedTask,
-  editedTask: getFormValues('editTask')(state)
-}), {
-  setEditedTask,
+@connect(null, {
   updateTask,
+  updateLocalTask,
   removeTask
-})
-
-@reduxForm({
-  form: 'editTask',
-  enableReinitialize: true,
-  keepDirtyOnReinitialize: false
 })
 
 @injectSheet(styles)
 
 export default class Task extends Component {
-  isEdit() {
-    return this.props.editedTask && this.props.editedTask.id === this.props.task.id;
-  }
-  startEdit = (task) => {
-    this.props.setEditedTask(task);
+  startEdit = ({ id }) => {
+    this.props.updateLocalTask({ id, isEdit: true });
   };
   cancelEdit = () => {
-    this.props.setEditedTask();
+    const { task, updateLocalTask } = this.props;
+
+    updateLocalTask({ id: task.id, isEdit: false, isLoading: false });
   };
-  handleUpdate = (task = this.props.editedTask) => {
-    this.props.updateTask({ ...this.props.task, ...task });
-    this.cancelEdit();
+  handleUpdate = () => {
+    this.editFormRef.handleSubmit();
   };
   removeTask = (task) => {
     this.props.removeTask(task);
   };
+  setEditFormRef = (formRef) => {
+    this.editFormRef = formRef;
+  };
 
   render() {
-    const isEdit = this.isEdit();
-    const { classes, task, change, editedTask } = this.props;
-    const name = editedTask ? editedTask.name : 'wtf';
+    const {
+      classes,
+      task,
+      updateTask
+    } = this.props;
 
     return (
-      <List.Item onClick={() => this.props.updateTask({ ...task, done: !task.done })}>
+      <Dimmer.Dimmable
+        as={List.Item}
+        dimmed={task.isLoading}
+        blurring
+        onClick={() => updateTask({ ...task, done: !task.done })}
+      >
+        <Dimmer active={task.isLoading} inverted>
+          <Loader/>
+        </Dimmer>
+
         <Grid>
-          <Grid.Row className="equal width" verticalAlign="middle">
+          <Grid.Row className='equal width' verticalAlign='middle'>
             <Grid.Column>
-              <List.Content className={classes.listContent}>
+              <List.Content className={classes.taskContent}>
                 <Checkbox done={task.done ? 1 : 0} />
 
-                <Form
-                  id={'editTask_' + task.id}
-                  name="editTask"
-                  className={classes.form}
-                  onSubmit={this.props.handleSubmit(this.handleUpdate)}
-                >
-                  {isEdit ?
-                    <Field
-                      defaultValue="Just a single line..."
-                      component={TextArea}
-                      name="name"
-                      placeholder='Enter task name...'
-                      onClick={(e) => e.stopPropagation()}
-                      autoFocus
-                      onFocus={() => change('name', name + ' ')}
-                    />
-                    :
-                    task.name.split('\n').join('<br>')
-                  }
-                </Form>
+                {task.isEdit ?
+                  <EditTaskForm
+                    task={task}
+                    onSetEditFormRef={this.setEditFormRef}
+                    onUpdated={this.cancelEdit}
+                  />
+                  :
+                  <span dangerouslySetInnerHTML={{ __html: task.name.split('\n').join('<br>') }} />
+                }
+
               </List.Content>
             </Grid.Column>
 
-            <Grid.Column className="right aligned" style={{ flexGrow: 0, width: 'auto' }}>
+            <Grid.Column className='right aligned' style={{ flexGrow: 0, width: 'auto' }}>
               <Actions
-                isEdit={isEdit}
+                isEdit={task.isEdit}
                 task={task}
                 startEdit={this.startEdit}
                 cancelEdit={this.cancelEdit}
@@ -92,7 +84,7 @@ export default class Task extends Component {
             </Grid.Column>
           </Grid.Row>
         </Grid>
-      </List.Item>
+      </Dimmer.Dimmable>
     );
   }
 }
