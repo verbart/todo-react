@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Grid, List, Dimmer, Loader } from 'semantic-ui-react'
-import injectSheet from 'react-jss'
 import { updateTask, updateLocalTask, removeTask } from '../../actions/index';
 import Checkbox from './Checkbox';
 import Actions from './Actions';
 import EditTaskForm from './EditTaskForm';
-import styles from './styles';
+import cssClasses from './Task.module.scss';
 
 class Task extends Component {
   startEdit = ({ id }) => {
@@ -29,7 +28,6 @@ class Task extends Component {
 
   render() {
     const {
-      classes,
       task,
       updateTask
     } = this.props;
@@ -48,7 +46,7 @@ class Task extends Component {
         <Grid>
           <Grid.Row className='equal width' verticalAlign='middle'>
             <Grid.Column>
-              <List.Content className={classes.taskContent}>
+              <List.Content className={cssClasses.taskContent}>
                 <Checkbox done={task.done ? 1 : 0} />
 
                 {task.isEdit ?
@@ -80,8 +78,6 @@ class Task extends Component {
     );
   }
 }
-
-Task = injectSheet(styles)(Task);
 
 Task = connect(null, {
   updateTask,

@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Form } from 'semantic-ui-react'
 import { withFormik } from 'formik';
-import injectSheet from 'react-jss'
 import { updateTask } from '../../actions/index';
 import TextAreaAutoSize from 'react-textarea-autosize';
-import styles from './styles';
 import * as yup from 'yup';
+import cssClasses from './Task.module.scss';
 
 class EditTaskForm extends Component {
   componentWillMount() {
@@ -24,14 +23,13 @@ class EditTaskForm extends Component {
       handleChange,
       handleBlur,
       handleSubmit,
-      classes,
       onSetEditFormRef
     } = this.props;
 
     return (
       <Form
         ref={formRef => onSetEditFormRef(formRef)}
-        className={classes.form}
+        className={cssClasses.form}
         onSubmit={handleSubmit}
         noValidate
       >
@@ -41,7 +39,7 @@ class EditTaskForm extends Component {
           onChange={handleChange}
           onBlur={handleBlur}
           onClick={(e) => e.stopPropagation()}
-          className={classes.textarea}
+          className={cssClasses.textarea}
           placeholder='Enter task name...'
           rows={1}
           autoFocus
@@ -51,8 +49,6 @@ class EditTaskForm extends Component {
     );
   }
 }
-
-EditTaskForm = injectSheet(styles)(EditTaskForm);
 
 EditTaskForm = withFormik({
   mapPropsToValues: () => ({
