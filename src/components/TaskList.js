@@ -3,10 +3,6 @@ import { connect } from 'react-redux';
 import { List } from 'semantic-ui-react'
 import Task from './Task';
 
-@connect(state => ({
-  tasks: state.tasks.taskList
-}))
-
 class TaskList extends Component {
   render() {
     return (
@@ -18,5 +14,9 @@ class TaskList extends Component {
     );
   }
 }
+
+TaskList = connect(state => ({
+  tasks: state.tasks.taskList
+}))(TaskList);
 
 export default TaskList;

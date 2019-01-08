@@ -3,37 +3,8 @@ import { Form, Input, Button, Segment, Label, Message } from 'semantic-ui-react'
 import { withFormik } from 'formik';
 import * as yup from 'yup';
 
-@withFormik({
-  mapPropsToValues: () => ({
-    email: '',
-    password: ''
-  }),
 
-  validationSchema: yup.object().shape({
-    email: yup.string()
-      .email('Invalid email address')
-      .required('Email is required'),
-
-    password: yup.string()
-      // eslint-disable-next-line
-      .min(8, 'Must be longer than ${min} characters')
-      .required('Password is required')
-  }),
-
-  handleSubmit: (values, { props, setSubmitting, setErrors }) => {
-    if (props.isSubmitting) {
-      return;
-    }
-
-    setTimeout(() => {
-      setErrors({ login: true });
-
-      setSubmitting(false);
-    }, 1000);
-  }
-})
-
-export default class extends Component {
+class LoginForm extends Component {
   render() {
     const {
       values,
@@ -105,3 +76,35 @@ export default class extends Component {
     );
   }
 }
+
+LoginForm = withFormik({
+  mapPropsToValues: () => ({
+    email: '',
+    password: ''
+  }),
+
+  validationSchema: yup.object().shape({
+    email: yup.string()
+      .email('Invalid email address')
+      .required('Email is required'),
+
+    password: yup.string()
+    // eslint-disable-next-line
+      .min(8, 'Must be longer than ${min} characters')
+      .required('Password is required')
+  }),
+
+  handleSubmit: (values, { props, setSubmitting, setErrors }) => {
+    if (props.isSubmitting) {
+      return;
+    }
+
+    setTimeout(() => {
+      setErrors({ login: true });
+
+      setSubmitting(false);
+    }, 1000);
+  }
+})(LoginForm);
+
+export default LoginForm;

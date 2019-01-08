@@ -8,38 +8,7 @@ import TextAreaAutoSize from 'react-textarea-autosize';
 import styles from './styles';
 import * as yup from 'yup';
 
-@connect(null, {
-  updateTask
-})
-
-@withFormik({
-  mapPropsToValues: () => ({
-    name: ''
-  }),
-
-  validationSchema: yup.object().shape({
-    name: yup.string().required('Task name is required')
-  }),
-
-  handleSubmit: (values, { props, resetForm, setSubmitting }) => {
-    props.updateTask(
-      { ...props.task, ...values },
-
-      () => {
-        resetForm();
-        props.onUpdated();
-      },
-      (error) => {
-        setSubmitting(false);
-        console.log(error);
-      }
-    );
-  }
-})
-
-@injectSheet(styles)
-
-export default class Task extends Component {
+class EditTaskForm extends Component {
   componentWillMount() {
     const {
       setValues,
@@ -82,3 +51,36 @@ export default class Task extends Component {
     );
   }
 }
+
+EditTaskForm = injectSheet(styles)(EditTaskForm);
+
+EditTaskForm = withFormik({
+  mapPropsToValues: () => ({
+    name: ''
+  }),
+
+  validationSchema: yup.object().shape({
+    name: yup.string().required('Task name is required')
+  }),
+
+  handleSubmit: (values, { props, resetForm, setSubmitting }) => {
+    props.updateTask(
+      { ...props.task, ...values },
+
+      () => {
+        resetForm();
+        props.onUpdated();
+      },
+      (error) => {
+        setSubmitting(false);
+        console.log(error);
+      }
+    );
+  }
+})(EditTaskForm);
+
+EditTaskForm = connect(null, {
+  updateTask
+})(EditTaskForm);
+
+export default EditTaskForm;

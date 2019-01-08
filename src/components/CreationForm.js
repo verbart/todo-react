@@ -5,33 +5,6 @@ import { Form, Input, Button } from 'semantic-ui-react';
 import { addTask } from '../actions/index';
 import * as yup from "yup";
 
-@connect(state => ({
-  tasksCounter: state.tasks.taskList.length + 1
-}), {
-  addTask
-})
-
-@withFormik({
-  mapPropsToValues: () => ({
-    name: ''
-  }),
-
-  validationSchema: yup.object().shape({
-    name: yup.string().required('Task name is required')
-  }),
-
-  handleSubmit: (values, { props, resetForm }) => {
-    setTimeout(() => {
-      props.addTask({
-        id: Date.now(),
-        ...values
-      });
-
-      resetForm();
-    }, 1000);
-  }
-})
-
 class CreationForm extends Component {
   componentDidMount() {
     this.props.validateForm();
@@ -74,6 +47,33 @@ class CreationForm extends Component {
       </Form>
     );
   }
-}
+};
+
+CreationForm = withFormik({
+  mapPropsToValues: () => ({
+    name: ''
+  }),
+
+  validationSchema: yup.object().shape({
+    name: yup.string().required('Task name is required')
+  }),
+
+  handleSubmit: (values, { props, resetForm }) => {
+    setTimeout(() => {
+      props.addTask({
+        id: Date.now(),
+        ...values
+      });
+
+      resetForm();
+    }, 1000);
+  }
+})(CreationForm);
+
+CreationForm = connect(state => ({
+  tasksCounter: state.tasks.taskList.length + 1
+}), {
+  addTask
+})(CreationForm);
 
 export default CreationForm;

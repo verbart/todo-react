@@ -8,15 +8,7 @@ import Actions from './Actions';
 import EditTaskForm from './EditTaskForm';
 import styles from './styles';
 
-@connect(null, {
-  updateTask,
-  updateLocalTask,
-  removeTask
-})
-
-@injectSheet(styles)
-
-export default class Task extends Component {
+class Task extends Component {
   startEdit = ({ id }) => {
     this.props.updateLocalTask({ id, isEdit: true });
   };
@@ -88,3 +80,13 @@ export default class Task extends Component {
     );
   }
 }
+
+Task = injectSheet(styles)(Task);
+
+Task = connect(null, {
+  updateTask,
+  updateLocalTask,
+  removeTask
+})(Task);
+
+export default Task;
